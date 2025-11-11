@@ -73,7 +73,7 @@ def create_camper():
         return validation_error(e)
 
 # PATCH /campers/<int:id>
-@app.route('/campers/<int:id>', methods=['PATCH')
+@app.route('/campers/<int:id>', methods=['PATCH'])
 def update_camper(id):
     camper = db.session.get(Camper, id)
     if not camper:
