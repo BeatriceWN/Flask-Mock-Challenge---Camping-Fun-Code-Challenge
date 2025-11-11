@@ -39,3 +39,9 @@ def not_found(error):
 @app.errorhandler(405)
 def method_not_allowed(error):
     return make_response(jsonify({'error': 'Method Not Allowed'}), 405)
+
+if __name__ == '__main__':
+    # Add context for flask commands
+    with app.app_context():
+        print(f"Running on http://localhost:5555")
+        app.run(port=5555, debug=True)
