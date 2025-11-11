@@ -70,6 +70,28 @@ python -m server.app
 # Server will run on: [http://127.0.0.1:5555](http://127.0.0.1:5555)
 ```
 
+#### 6. Running Tests
+To verify the API functionality against the provided tests:
+
+```bash
+pytest -x
+```
+
+### Validation Rules
+
+* Camper
+
+    - name is required
+
+    - age must be an integer between 8 and 18 inclusive
+
+* Signup
+
+    - time must be an integer between 0 and 23
+
+    - camper_id and activity_id must refer to existing records
+
+
 ### API Endpoints (Controller)
 
 | Method | Route | Description | Success Status |
@@ -81,6 +103,64 @@ python -m server.app
 | **GET** | `/activities` | List all activities (excluding signups). | 200 |
 | **DELETE** | `/activities/<id>` | Delete activity and associated signups (cascades). | 204 |
 | **POST** | `/signups` | Create a new signup (validated: time 0-23, valid FKs). | 201 |
+
+
+### Example Responses
+GET /campers
+
+```bash
+[
+  {"id": 1, "name": "Caitlin", "age": 8},
+  {"id": 2, "name": "Lizzie", "age": 9}
+]
+```
+
+GET /campers/1 (exists)
+
+```bash
+{
+  "id": 1,
+  "name": "Nicholas Martinez",
+  "age": 12,
+  "activities": [
+    {"id": 5, "name": "Hiking by the stream.", "difficulty": 2}
+  ],
+  "signups": [
+    {
+      "id": 39,
+      "camper_id": 1,
+      "activity_id": 5,
+      "time": 8,
+      "activity": {"id": 5, "name": "Hiking by the stream.", "difficulty": 2}
+    }
+  ]
+}
+```
+
+GET /campers/999 (missing)
+
+```bash
+{"error": "Camper not found"}
+```
+
+POST /campers (validation failure)
+
+```bash
+{"errors": ["validation errors"]}
+```
+
+POST /signups (success)
+
+```bash
+{
+  "id": 100,
+  "camper_id": 1,
+  "activity_id": 3,
+  "time": 9,
+  "activity": {"id": 3, "name": "Swim in the lake.", "difficulty": 3},
+  "camper": {"id": 1, "name": "Ashley Delgado", "age": 11}
+}
+```
 
 ### Error Handling
 * Validation Errors (400): Handled by a global error handler that returns a consistent JSON object: {"errors": ["validation errors"]}.
