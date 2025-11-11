@@ -21,3 +21,7 @@ app.config.from_object(Config)
 # Initialize SQLAlchemy with naming convention
 metadata = MetaData(naming_convention=convention)
 db = SQLAlchemy(app, metadata=metadata)
+
+# Initialize Flask-Migrate
+migrate = Migrate(app, db)
+
