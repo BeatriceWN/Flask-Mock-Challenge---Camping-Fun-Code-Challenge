@@ -27,3 +27,10 @@ migrate = Migrate(app, db)
 
 # Import models *after* db is initialized to avoid circular imports
 from server.models import Camper, Activity, Signup 
+
+# --- Routes will go here (Controller) ---
+
+# Global error handler for 404 (Not Found)
+@app.errorhandler(404)
+def not_found(error):
+    return make_response(jsonify({'error': 'Not Found'}), 404)
