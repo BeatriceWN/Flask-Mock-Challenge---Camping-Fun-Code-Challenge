@@ -1,12 +1,9 @@
-# seed.py
-
-from server.models import Camper, Activity, Signup
-from server.app import app
-from server.db_config import db
+from .models import Camper, Activity, Signup
+from .app import app
+from .db_config import db
 from sqlalchemy.exc import IntegrityError
 import random
 
-# --- The Fix is in this block ---
 with app.app_context():
     # 1. CREATE TABLES (In case migrations haven't run or tables are missing)
     # This ensures all defined models in models.py exist in the DB.
@@ -18,7 +15,6 @@ with app.app_context():
     Camper.query.delete()
     Activity.query.delete()
     db.session.commit()
-# -----------------------------------
 
     print("Creating Activities...")
     activities = [
@@ -42,19 +38,23 @@ with app.app_context():
     db.session.add_all(campers)
     db.session.commit()
 
+    # --- server/seed.py (Snippet) ---
+
+    # --- server/seed.py (Snippet) ---
+
     print("Creating Signups...")
     signups_data = [
         Signup(camper_id=campers[0].id, activity_id=activities[0].id, time=9),
-        Signup(camper_id=campers[0].id, activity_id=activities[3].id, time=20),
+        Signup(camper_id=campers[0].id, activity_id=activities[3].id, time=16), 
         Signup(camper_id=campers[1].id, activity_id=activities[2].id, time=14),
         Signup(camper_id=campers[2].id, activity_id=activities[1].id, time=11),
-        Signup(camper_id=campers[3].id, activity_id=activities[4].id, time=6),
-    ]
+        Signup(camper_id=campers[3].id, activity_id=activities[4].id, time=8), 
+]
     
     # Randomly add more signups
     for camper in campers:
         activity = random.choice(activities)
-        time = random.randint(7, 19)
+        time = random.randint(8, 16) 
         try:
             signups_data.append(
                 Signup(camper_id=camper.id, activity_id=activity.id, time=time)
