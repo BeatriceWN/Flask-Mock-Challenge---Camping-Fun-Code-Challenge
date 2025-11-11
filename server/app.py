@@ -13,3 +13,11 @@ convention = {
     "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
     "pk": "pk_%(table_name)s"
 }
+
+# Initialize Flask App
+app = Flask(__name__)
+app.config.from_object(Config)
+
+# Initialize SQLAlchemy with naming convention
+metadata = MetaData(naming_convention=convention)
+db = SQLAlchemy(app, metadata=metadata)
