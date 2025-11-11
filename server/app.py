@@ -34,3 +34,8 @@ from server.models import Camper, Activity, Signup
 @app.errorhandler(404)
 def not_found(error):
     return make_response(jsonify({'error': 'Not Found'}), 404)
+
+# Global error handler for 405 (Method Not Allowed)
+@app.errorhandler(405)
+def method_not_allowed(error):
+    return make_response(jsonify({'error': 'Method Not Allowed'}), 405)
