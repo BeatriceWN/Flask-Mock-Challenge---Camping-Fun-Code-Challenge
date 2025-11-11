@@ -25,3 +25,5 @@ db = SQLAlchemy(app, metadata=metadata)
 # Initialize Flask-Migrate
 migrate = Migrate(app, db)
 
+# Import models *after* db is initialized to avoid circular imports
+from server.models import Camper, Activity, Signup 
