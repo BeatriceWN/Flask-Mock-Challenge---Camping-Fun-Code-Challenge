@@ -11,8 +11,6 @@ This project implements a RESTful API for managing campers, activities, and sign
 
 ### Project Status
 
-### Project Status
-
 All **Part 1 (Models/Migrations)**, **Part 2 (Validations)**, and **Part 3 (API Routes)** requirements have been successfully implemented as an API-only service.
 
 ---
