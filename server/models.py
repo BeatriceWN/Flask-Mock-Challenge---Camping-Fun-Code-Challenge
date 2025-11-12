@@ -24,7 +24,6 @@ class Camper(db.Model, SerializerMixin):
         overlaps='signups,camper'
     )
 
-    # Prevent circular nesting
     serialize_rules = (
         '-signups.camper',
         '-signups.activity.campers',
@@ -87,7 +86,6 @@ class Signup(db.Model, SerializerMixin):
     camper_id = db.Column(db.Integer, db.ForeignKey('campers.id'), nullable=False)
     activity_id = db.Column(db.Integer, db.ForeignKey('activities.id'), nullable=False)
 
-    # Keep relationships flat for most serializations
     serialize_rules = (
         '-camper.signups',
         '-camper.activities',

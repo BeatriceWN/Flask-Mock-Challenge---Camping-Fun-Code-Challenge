@@ -17,7 +17,7 @@ migrate = Migrate(app, db)
 
 # --- Error Handlers & Helper Functions ---
 
-# Global error handler for validation failure (Part 2)
+# Global error handler for validation failure 
 def validation_error(e):
     # This will catch exceptions raised by @validates (ValueError)
     return make_response(jsonify({"errors": ["validation errors"]}), 400)
@@ -36,17 +36,14 @@ def method_not_allowed(error):
 # Import models *after* db and migrate are initialized to avoid circular imports
 from .models import Camper, Activity, Signup 
 
-# --- API Routes (Part 3) ---
+# --- API Routes ---
 
-# GET /campers - FIX: Exclude all relationships for clean list view
 @app.route('/campers', methods=['GET'])
 def list_campers():
     campers = Camper.query.all()
-    # Exclude signups AND the complex activities list to prevent swapped data in the list view
     campers_data = [camper.to_dict(rules=('-signups', '-activities')) for camper in campers]
     return jsonify(campers_data), 200
 
-# GET /campers/<int:id> - Now fixed by models.py serialization rules
 @app.route('/campers/<int:id>')
 def get_camper(id):
     camper = db.session.get(Camper, id)
@@ -64,7 +61,7 @@ def get_camper(id):
                 "difficulty": a.difficulty
             } for a in camper.activities
         ],
-        "signups": [s.to_dict() for s in camper.signups]  # <- nested activity included
+        "signups": [s.to_dict() for s in camper.signups]  
     }
 
     return jsonify(camper_data), 200
@@ -105,11 +102,10 @@ def update_camper(id):
         db.session.rollback()
         return validation_error(e)
 
-# GET /activities - FIX: Exclude all relationships for clean list view
+# GET /activities 
 @app.route('/activities', methods=['GET'])
 def list_activities():
     activities = Activity.query.all()
-    # Exclude signups AND the complex campers list to prevent swapped data in the list view
     activities_data = [activity.to_dict(rules=('-signups', '-campers')) for activity in activities]
     return jsonify(activities_data), 200
 
@@ -131,7 +127,6 @@ def delete_activity(id):
 def create_signup():
     data = request.get_json()
     try:
-        # Camper ID, Activity ID, and time validation happen in models.py
         new_signup = Signup(
             camper_id=data.get('camper_id'),
             activity_id=data.get('activity_id'),

@@ -1,8 +1,7 @@
-# server/db_config.py
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 
-# Naming convention for foreign keys and indices (same as in app.py)
+# Naming convention for foreign keys and indices
 convention = {
     "ix": 'ix_%(column_0_label)s',
     "uq": "uq_%(table_name)s_%(column_0_name)s",

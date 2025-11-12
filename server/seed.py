@@ -5,12 +5,9 @@ from sqlalchemy.exc import IntegrityError
 import random
 
 with app.app_context():
-    # 1. CREATE TABLES (In case migrations haven't run or tables are missing)
-    # This ensures all defined models in models.py exist in the DB.
     db.create_all() 
 
     print("Clearing database...")
-    # 2. DELETE DATA (Order matters for foreign keys: Signups -> Campers/Activities)
     Signup.query.delete()
     Camper.query.delete()
     Activity.query.delete()
@@ -37,10 +34,6 @@ with app.app_context():
     ]
     db.session.add_all(campers)
     db.session.commit()
-
-    # --- server/seed.py (Snippet) ---
-
-    # --- server/seed.py (Snippet) ---
 
     print("Creating Signups...")
     signups_data = [
